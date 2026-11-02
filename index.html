@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#b7e6ff" />
+    <title>Fleky's Snow Day</title>
+    <meta
+      name="description"
+      content="A snowy meadow for Fleky the cat. Chase yarn, jump through the hoop, and roll over."
+    />
+    <link rel="icon" href="assets/favicon.svg" />
+    <link rel="preload" href="assets/Fredoka.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <canvas id="game" width="1024" height="768" aria-hidden="true"></canvas>
+
+    <header class="top">
+      <h1 class="title">
+        <span class="line line-name">Fleky's</span>
+        <span class="line line-day">
+          <svg class="deco" viewBox="0 0 64 64" aria-hidden="true">
+            <ellipse cx="32" cy="42" rx="12" ry="10" />
+            <circle cx="20" cy="28" r="6" />
+            <circle cx="32" cy="22" r="6" />
+            <circle cx="44" cy="28" r="6" />
+          </svg>
+          <span class="t-snow">Snow</span>
+          <span class="t-day">Day</span>
+          <svg class="deco" viewBox="0 0 64 64" aria-hidden="true">
+            <ellipse cx="32" cy="42" rx="12" ry="10" />
+            <circle cx="20" cy="28" r="6" />
+            <circle cx="32" cy="22" r="6" />
+            <circle cx="44" cy="28" r="6" />
+          </svg>
+        </span>
+      </h1>
+    </header>
+
+    <button type="button" id="btn-sound" class="sound" aria-pressed="false" aria-label="Sound on">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path class="speaker" d="M14 26h10l12-10v32L24 38H14z" />
+        <path class="wave" d="M42 24c6 4 6 12 0 16" />
+        <path class="wave" d="M46 18c10 8 10 20 0 28" />
+        <path class="slash" d="M16 16l32 32" />
+      </svg>
+    </button>
+
+    <div class="score" id="scorebox" aria-live="polite" aria-label="0 yarns">
+      <svg class="yarn-ico" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="34" r="18" fill="#ffd1ea" />
+        <path d="M16 30c8-10 24-10 32 2" fill="none" stroke="#7d6cff" stroke-width="4" stroke-linecap="round" />
+        <path d="M18 38c8 8 22 6 28-4" fill="none" stroke="#3ec8ff" stroke-width="4" stroke-linecap="round" />
+        <path d="M22 28c6 4 8 10 4 16" fill="none" stroke="#ff8fbf" stroke-width="4" stroke-linecap="round" />
+        <path d="M30 22c8 2 14 10 12 18" fill="none" stroke="#ffd15a" stroke-width="4" stroke-linecap="round" />
+        <circle cx="26" cy="28" r="3" fill="#fff" />
+      </svg>
+      <span id="score">0</span>
+    </div>
+
+    <div class="dock">
+      <button type="button" class="action roll" id="btn-roll" data-action="roll" aria-label="Roll over">
+        <svg class="ico" viewBox="0 0 64 64" aria-hidden="true">
+          <ellipse cx="32" cy="42" rx="14" ry="12" />
+          <circle cx="16" cy="26" r="7" />
+          <circle cx="32" cy="18" r="7.5" />
+          <circle cx="48" cy="26" r="7" />
+        </svg>
+        <span class="label">Roll<br />Over</span>
+      </button>
+      <button type="button" class="action jump" id="btn-jump" data-action="jump" aria-label="Jump">
+        <svg class="ico" viewBox="0 0 64 64" aria-hidden="true">
+          <ellipse cx="34" cy="44" rx="16" ry="10" />
+          <circle cx="22" cy="40" r="10" />
+          <circle cx="42" cy="36" r="12" />
+          <path class="arrow" d="M32 14v16M24 22l8-9 8 9" />
+        </svg>
+        <span class="label">Jump</span>
+      </button>
+      <button type="button" class="action chase" id="btn-chase" data-action="chase" aria-label="Chase yarn">
+        <svg class="ico yarn" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="34" r="16" fill="#ffe4f4" />
+          <path d="M18 30c7-9 22-9 28 2" stroke="#7d6cff" />
+          <path d="M20 40c7 7 18 5 24-4" stroke="#3ec8ff" />
+          <path d="M26 26c8 2 12 8 8 16" stroke="#ff8fbf" />
+          <path d="M22 36c8 3 14 8 12 14" stroke="#ffc53d" />
+          <circle cx="26" cy="28" r="3" fill="#fff" stroke="none" />
+        </svg>
+        <span class="label">Chase<br />Yarn</span>
+      </button>
+    </div>
+
+    <div class="turn" role="note">
+      <div class="turn-card">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="18" y="8" width="28" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="4" />
+          <path d="M46 40c8 2 12 8 10 14" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+          <path d="M50 48l6 8 8-6" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <p class="turn-title">Turn sideways</p>
+        <p>Fleky's meadow is nice and wide.</p>
+      </div>
+    </div>
+
+    <script type="module" src="js/game.js"></script>
+  </body>
+</html>

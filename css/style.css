@@ -1,0 +1,338 @@
+/* Fleky's Snow Day. Big touch targets, one landscape screen. */
+
+@font-face {
+  font-family: "Fredoka";
+  src: url("../assets/Fredoka.ttf") format("truetype");
+  font-weight: 400 700;
+  font-stretch: 75% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ink: #5c4d86;
+  --purple: #9a74f2;
+  --blue: #3eb4ff;
+  --pink: #ff78b3;
+  color: var(--ink);
+  font-family: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #bfe8ff;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+}
+
+#game {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+}
+
+.top {
+  position: fixed;
+  top: calc(4px + env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  padding: 0 120px;
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+  line-height: 0.82;
+}
+
+.line {
+  display: block;
+}
+
+.line-name,
+.t-snow,
+.t-day {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  -webkit-text-stroke: 0.055em #fff;
+  paint-order: stroke fill;
+}
+
+.line-name {
+  font-size: clamp(42px, 7.4vw, 92px);
+  color: var(--purple);
+  filter: drop-shadow(0 4px 0 rgba(150, 120, 210, 0.28));
+}
+
+.line-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.12em;
+  margin-top: 0.02em;
+}
+
+.t-snow,
+.t-day {
+  font-size: clamp(36px, 6.2vw, 78px);
+}
+
+.t-snow {
+  color: var(--blue);
+  filter: drop-shadow(0 4px 0 rgba(80, 160, 230, 0.28));
+}
+
+.t-day {
+  color: var(--pink);
+  filter: drop-shadow(0 4px 0 rgba(230, 120, 170, 0.28));
+}
+
+.deco {
+  width: clamp(22px, 3vw, 36px);
+  height: clamp(22px, 3vw, 36px);
+  fill: #c9b4f8;
+  opacity: 0.95;
+}
+
+.sound {
+  position: fixed;
+  z-index: 4;
+  top: calc(12px + env(safe-area-inset-top));
+  left: calc(12px + env(safe-area-inset-left));
+  width: 52px;
+  height: 52px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 6px 14px rgba(100, 140, 180, 0.25);
+  padding: 8px;
+  color: var(--ink);
+}
+
+.sound svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sound .speaker {
+  fill: #d8c8fb;
+  stroke: var(--ink);
+}
+
+.sound .slash {
+  display: none;
+  stroke: #e45b8a;
+}
+
+.sound.is-muted .wave {
+  display: none;
+}
+
+.sound.is-muted .slash {
+  display: block;
+}
+
+.score {
+  position: fixed;
+  z-index: 3;
+  top: calc(12px + env(safe-area-inset-top));
+  right: calc(14px + env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 58px;
+  padding: 4px 18px 4px 8px;
+  background: #fff;
+  border: 3px solid #f1e7ff;
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(120, 150, 190, 0.22);
+  pointer-events: none;
+}
+
+.yarn-ico {
+  width: 48px;
+  height: 48px;
+}
+
+.score span {
+  font-weight: 700;
+  font-size: clamp(30px, 4.6vh, 46px);
+  color: #7d68c4;
+  min-width: 0.7ch;
+  line-height: 1;
+}
+
+.score span.pop {
+  animation: pop 0.35s ease;
+}
+
+@keyframes pop {
+  40% {
+    transform: scale(1.28);
+  }
+}
+
+.dock {
+  position: fixed;
+  z-index: 3;
+  left: calc(12px + env(safe-area-inset-left));
+  right: calc(12px + env(safe-area-inset-right));
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  height: clamp(96px, 20vh, 138px);
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 5px solid #fff;
+  border-radius: 32px;
+  box-shadow:
+    0 7px 0 rgba(255, 255, 255, 0.45),
+    0 12px 22px rgba(90, 130, 170, 0.22);
+  color: #5a4784;
+  font: inherit;
+  font-weight: 700;
+  font-size: clamp(26px, 4vh, 38px);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  padding: 8px 12px;
+  touch-action: manipulation;
+}
+
+.action .label {
+  text-align: left;
+}
+
+.action .ico {
+  width: clamp(46px, 8vh, 68px);
+  height: clamp(46px, 8vh, 68px);
+  flex: none;
+  fill: #fff;
+}
+
+.action.roll {
+  background: linear-gradient(#f3e9ff, #d9c6fb);
+}
+
+.action.jump {
+  background: linear-gradient(#e7f6ff, #b7e4fb);
+}
+
+.action.jump .arrow {
+  fill: none;
+  stroke: #5d74e6;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.action.chase {
+  background: linear-gradient(#ffe6f3, #ffc0de);
+}
+
+.action.chase .yarn {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.action.is-down {
+  transform: translateY(4px) scale(0.98);
+  box-shadow: 0 3px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* A gentle bounce until the first tap, so the buttons invite a press. */
+body:not(.played) .action {
+  animation: invite 1.6s ease-in-out infinite;
+}
+
+body:not(.played) .chase {
+  animation-delay: 0.15s;
+}
+
+@keyframes invite {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+button:focus-visible {
+  outline: 4px solid #fff;
+  outline-offset: 3px;
+}
+
+.turn {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .turn {
+    position: fixed;
+    inset: 0;
+    z-index: 8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(190, 230, 255, 0.94);
+    padding: 24px;
+    text-align: center;
+  }
+
+  .turn-card {
+    color: var(--ink);
+  }
+
+  .turn-card svg {
+    width: 88px;
+    height: 88px;
+    color: var(--purple);
+  }
+
+  .turn-title {
+    margin: 8px 0 0;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--purple);
+  }
+
+  .turn-card p {
+    margin: 8px 0 0;
+    font-size: 22px;
+  }
+}
